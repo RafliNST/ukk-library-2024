@@ -83,8 +83,11 @@ class User extends CI_Controller {
 		$data['search_bar'] = "collapse";
 		$this->MBase->load('ViewRegistrasi', $data);
 	}
-	public function NotFound($path)
+	public function NotFound($msg)
 	{
-		echo 'Path '.$path.' tidak ada';
+		$data['title'] = 'Error';
+		$data['search_bar'] = '';
+		$data['param'] = $msg;
+		$this->MBase->load('ErrorMsg', $data);
 	}
 }

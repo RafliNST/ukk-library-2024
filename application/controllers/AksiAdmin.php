@@ -4,6 +4,8 @@ class AksiAdmin extends CI_Controller{
     public function __construct()
     {
         parent::__construct();
+        if ($this->session->userdata('user')->level == 'user')
+			redirect(base_url());
     }
     public function TambahBuku()
     {

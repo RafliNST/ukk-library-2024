@@ -4,6 +4,8 @@ class Form extends CI_Controller {
 	function __construct() 
 	{
 		parent::__construct();
+        if ($this->session->userdata('user')->level == 'user')
+			redirect(base_url());
 	}
     public function _remap($param, $path)
     {
@@ -24,7 +26,7 @@ class Form extends CI_Controller {
 	public function index()
 	{
 		$data['title'] 		= 'Index';
-		$data['search_bar'] = "";	
+		$data['search_bar'] = "";
 	}
     public function buku()
     {

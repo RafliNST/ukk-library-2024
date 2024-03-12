@@ -4,6 +4,8 @@ class Admin extends CI_Controller {
 	function __construct() 
 	{
 		parent::__construct();
+		if ($this->session->userdata('user')->level == 'user')
+			redirect(base_url());
 	}
 	function _remap($param) 
 	{
@@ -16,7 +18,7 @@ class Admin extends CI_Controller {
 				break;
 			case 'petugas':
 				$this->petugas();
-				break;				
+				break;
 			case 'peminjaman':
 				$this->peminjaman();
 				break;
