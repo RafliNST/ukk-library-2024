@@ -25,8 +25,9 @@
 				table:nama_table,
 				kolom: nama_kolom,
 				id_data: id_data
-			}, location.reload())
+			})
 		}
+		location.reload();
 	}
 
 	$('#cari').on('keyup', () => {
@@ -38,9 +39,7 @@
 	$('#ubah-password').click(() => {
 		$.post('<?= base_url().'aksi/ubahpassword' ?>', {
 			password: $('#password').val()
-		}, function (data) {
-			location.reload();
-		})
+		}, location.reload())
 	})
 
 	$('#ubah-data').click(() => {
@@ -53,7 +52,7 @@
 	$('#tambah-kategori').on('click', () => {
 		let genre_name = prompt('nama genre');
 		if (genre_name === null) return
-		$.post('<?= base_url().'form/tambah-genre'?>', {
+		$.post('<?= base_url().'aksiadmin/tambahgenre'?>', {
 			genre:genre_name
 		})
 		location.reload()

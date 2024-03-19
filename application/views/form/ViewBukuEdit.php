@@ -4,7 +4,7 @@
 			<p class="h1">Form Buku</p>
 		</div>
 		<div class="card-body">
-			<?= form_open_multipart('form/edit-buku'); ?>
+			<?= form_open_multipart('aksiadmin/editbuku'); ?>
             <form action="">
             <?php
             foreach($books as $book=>$o):

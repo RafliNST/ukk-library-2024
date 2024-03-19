@@ -6,16 +6,26 @@
 			</a>
 		</div>
 	</div>
-	<table id="fetch-data" class="table table-responsive-sm table-striped table-sm table-action table-bordered"
-		style="width:100%">
+	<?php
+	if (isset($this->session->response)):
+	?>
+	<div class="row my-3">
+		<div class="col">
+			<ul class="list-group-item list-group-item-<?= $this->session->userdata('response')->status ?>">
+				<?= $this->session->userdata('response')->message ?>
+			</ul>
+		</div>
+	</div>
+	<?php endif ?>
+	<table id="fetch-data" class="table table-responsive-sm table-striped table-sm table-action table-bordered w-100" style="width: 100%;">
 		<thead>
 			<tr>
-				<th width="3%">#</th>
-				<th width="30%">Judul</th>
-				<th width="15%">Penulis</th>
-				<th width="15%">Penerbit</th>
-				<th width="15%">Tahun Terbit</th>
-				<th width="35%">Blurb</th>
+				<th width="5%">#</th>
+				<th width="25%">Judul</th>
+				<th width="10%">Penulis</th>
+				<th width="10%">Penerbit</th>
+				<th width="5%">Tahun Terbit</th>
+				<th width="45%">Blurb</th>
 				<th class="d-print-none">Aksi</th>
 			</tr>
 		</thead>
@@ -24,7 +34,7 @@
 		$i = 0;
 		foreach($books as $book => $u):
 		?>
-			<tr>
+			<tr style="height: 2em;" class="">
 				<td>
 					<?= ++$i ?>
 				</td>

@@ -4,7 +4,7 @@
 			<p class="h1">Form Buku</p>
 		</div>
 		<div class="card-body">
-			<?= form_open_multipart('form/tambah-buku')?>
+			<?= form_open_multipart('aksiadmin/tambahbuku')?>
 			<form action="">
 				<div class="row">
 					<div class="col-6">

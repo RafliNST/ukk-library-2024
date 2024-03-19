@@ -35,7 +35,7 @@ class Welcome extends CI_Controller {
 		$tidak_tersedia = [''];	
 		foreach($not_available as $not) {array_push($tidak_tersedia, $not->buku_id);}
 
-		$batas = 8;
+		$batas = 6;
 
 		$this->db->select('*');
 		$this->db->from('buku');

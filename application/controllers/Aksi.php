@@ -63,7 +63,7 @@ class Aksi extends CI_Controller {
         $id_pinjam  = $this->MBase->BakeId('peminjaman', 'peminjaman_id');
         $kode_buku  = $this->db->escape_str($this->input->post('kode_buku'));
         $user_id    = $this->session->userdata('user')->user_id;
-        $tgl_pinjam = date('Y-m-d');
+        $tgl_pinjam = date('Y-m-d H:i:s');
         $status     = 1;
 
         $data_peminjaman   = [
@@ -86,7 +86,7 @@ class Aksi extends CI_Controller {
     public function kembalikan()
     {
         $id_pinjam  = $this->db->escape_str($this->input->post('peminjaman_id'));
-        $pengembalian = date('Y-m-d');
+        $pengembalian = date('Y-m-d H:i:s');
         $status     = 2;
 
         $data_peminjaman   = [

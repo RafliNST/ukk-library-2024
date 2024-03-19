@@ -18,7 +18,8 @@
 				<div class="col-9">
 					<div class="tab-content">
 						<div class="tab-pane fade show active container mx-2" id="home">
-							<form action="<?= base_url().'aksiadmin/edituser'?>" method="post">
+							<form action="<?= base_url().'aksiadmin/ubahdata'?>" method="post">
+								<input type="hidden" name="id" value="<?= $o->user_id ?>">
 								<div class="form-group text-light">
 									<label for="#">Nama Lengkap</label>
 									<input type="text" name="nama" id="nama-lengkap"
@@ -31,13 +32,13 @@
 								</div>
 								<div class="form-group text-light">
 									<input type="submit" value="Ubah Data" class="btn btn-primary btn-block w-50"
-										id="ubah-data">
+										id="ubah-data-user">
 								</div>
 							</form><!-- data umum -->
 						</div>
 						<div class="tab-pane fade show container mx-2" id="profile">
-							<form action="<?= base_url().'aksiadmin/editpassword'?>" method="post">
-								<input type="hidden" name="user_id" value="<?= $o->user_id ?>">
+							<form action="<?= base_url().'aksiadmin/ubahpassword'?>" method="post">
+								<input type="hidden" name="id" value="<?= $o->user_id ?>">
 								<div class="form-group text-light">
 									<label for="#">Password Baru</label>
 									<input type="password" name="password" id="password"
@@ -53,7 +54,7 @@
 								</div>
 								<div class="form-group text-light">
 									<input type="submit" value="Ubah Password" class="btn btn-primary btn-block w-50"
-										id="ubah-password">
+										id="ubah-password-user">
 								</div>
 							</form>
 						</div>

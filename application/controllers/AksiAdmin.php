@@ -4,6 +4,8 @@ class AksiAdmin extends CI_Controller{
     public function __construct()
     {
         parent::__construct();
+        $this->load->helper('form');
+        $this->load->library('form_validation');
         if ($this->session->userdata('user')->level == 'user')
 			redirect(base_url());
     }
@@ -38,7 +40,7 @@ class AksiAdmin extends CI_Controller{
                 'blurb'     => $blurb,
                 'slug'      => $slug
             ];
-            $this->db->insert('buku', $data);
+            $query = $this->db->insert('buku', $data);
 
             $kategories    = $this->db->escape_str($this->input->post('kategori'));
 
@@ -50,7 +52,19 @@ class AksiAdmin extends CI_Controller{
                     'BukuID' => $kode_buku
                 ]);
             endforeach;
-            redirect(base_url().'form/buku');
+            if (!$query) {
+                $this->session->set_flashdata('response', (object) [
+                    'status' => 'danger',
+                    'message' => "gagal menambahkan buku <b>$judul</b>"
+                ]);
+                redirect(base_url()."buku");
+                return;
+            }
+            $this->session->set_flashdata('response', (object) [
+                'status' => 'success',
+                'message' => "berhasil menambahkan buku <b>$judul</b>"
+            ]);
+            redirect(base_url().'admin/buku');
         }
     }
     public function EditBuku()
@@ -73,7 +87,7 @@ class AksiAdmin extends CI_Controller{
         $this->load->library('upload', $config);
         if (!$this->upload->do_upload('cover')){
             $error = ['error' => $this->upload->display_errors()];
-            echo var_dump($error); exit;
+            // echo var_dump($error); exit;
         }else{
             $file   = $this->upload->data();
             $data   = [
@@ -105,9 +119,28 @@ class AksiAdmin extends CI_Controller{
                         'BukuID' => $kode_buku
                     ]);
                 endforeach;
-                redirect(base_url());
+                $this->session->set_flashdata('response', (object) [
+                    'status' => 'success',
+                    'message' => 'berhasil mengedit buku <b>'.$config['file_name'].'</b>'
+                ]);                
+                redirect(base_url()."admin/buku");
+                return;
+            }
+            else {
+                $this->session->set_flashdata('response', (object) [
+                    'status' => 'danger',
+                    'message' => 'gagal mengedit buku <b>'.$config['file_name'].'</b>'
+                ]);                
+                redirect(base_url()."admin/buku");
+                return;
             }
         }
+        $this->session->set_flashdata('response', (object) [
+            'status' => 'danger',
+            'message' => 'gagal mengedit buku <b>'.$config['file_name'].'</b>'
+        ]);                
+        redirect(base_url()."admin/buku");
+        return;
     }
     public function DeleteBuku()
     {
@@ -129,7 +162,21 @@ class AksiAdmin extends CI_Controller{
         $data     = [
             "$kolom" => $id_data
         ];
-        $this->db->delete($table, $data);
+        $query = $this->db->delete($table, $data);
+        if (!$query) {
+            $this->session->set_flashdata('response', (object) [
+                'status' => 'danger',
+                'message' => 'gagal menghapus buku <b>'.$id_data.'</b>'
+            ]);                
+            redirect(base_url()."admin/buku");
+            return;
+        }
+        $this->session->set_flashdata('response', (object) [
+            'status' => 'success',
+            'message' => 'berhasil menghapus buku <b>'.$id_data.'</b>'
+        ]);                
+        redirect(base_url()."admin/buku");
+        return;
     }
     public function TambahUser()
     {
@@ -158,8 +205,27 @@ class AksiAdmin extends CI_Controller{
             'level'        => $status
         ];
 
-        $this->db->insert('user', $data);
-        redirect(base_url().'admin/');
+        try {
+            $query = $this->db->insert('user', $data);
+            // throw new exception("safd");
+            if ($query) {
+                $this->session->set_flashdata('response', (object) [
+                    'status' => 'success',
+                    'message' => 'berhasil menambahkan user <b>'.$username.'</b>'
+                ]);
+                redirect(base_url()."admin/$status");
+                return;
+            }
+        }
+        catch (Exception $e) {
+            echo $e;
+        }
+        $this->session->set_flashdata('response', (object) [
+            'status' => 'danger',
+            'message' => 'gagal menambahkan user <b>'.$username.'</b>'
+        ]);
+        redirect(base_url()."admin/$status");
+        return;
     }
     public function EditUser()
     {
@@ -172,15 +238,30 @@ class AksiAdmin extends CI_Controller{
             'alamat' => $alamat
         ];
         $this->db->set($data_user);
-        $this->db->where('user_id', $user_id);        
-        $update_pass= $this->db->update('user');
+        $this->db->where('user_id', $user_id);
+        $query = $this->db->update('user');
 
-        if (!($update_pass)) {
-            echo "<script> alert('nooo') </script>";
+        $this->db->select('level');
+        $this->db->from('user');
+        $this->db->where('user_id', $user_id);
+        $status = $this->db->get()->result();
+
+        $status = $status[0]->level;
+
+        if (!$query) {
+            $this->session->set_flashdata('response', (object) [
+                'status' => 'danger',
+                'message' => 'gagal mengedit user <b>'.$user_id.'</b>'
+            ]);                
+            redirect(base_url()."admin/".$status);
+            return;
         }
-        else {
-            redirect(base_url());
-        }    
+        $this->session->set_flashdata('response', (object) [
+            'status' => 'success',
+            'message' => 'berhasil mengedit user <b>'.$user_id.'</b>'
+        ]);                
+        redirect(base_url()."admin/".$status);
+        return;
     }
     public function EditPassword()
     {
@@ -190,14 +271,29 @@ class AksiAdmin extends CI_Controller{
         $pass_user  = ['password' => md5($password)];
         $this->db->set($pass_user);
         $this->db->where('user_id', $user_id);        
-        $update_pass= $this->db->update('user');
+        $query= $this->db->update('user');
 
-        if (!($update_pass)) {
-            echo "<script> alert('nooo') </script>";
+        $this->db->select('level');
+        $this->db->from('user');
+        $this->db->where('user_id', $user_id);
+        $status = $this->db->get()->result();
+
+        $status = $status[0]->level;
+
+        if (!$query) {
+            $this->session->set_flashdata('response', (object) [
+                'status' => 'danger',
+                'message' => 'gagal mengubah password user <b>'.$user_id.'</b>'
+            ]);                
+            redirect(base_url()."admin/".$status);
+            return;
         }
-        else {
-            redirect(base_url());
-        }  
+        $this->session->set_flashdata('response', (object) [
+            'status' => 'success',
+            'message' => 'gagal mengubah password user <b>'.$user_id.'</b>'
+        ]);                
+        redirect(base_url()."admin/".$status);
+        return;
     }
     public function DeleteData()
     {
@@ -206,10 +302,6 @@ class AksiAdmin extends CI_Controller{
         $id_data  = $this->db->escape_str(strtolower($this->input->post('id_data')));
 
         $this->db->delete($table, ["$kolom" => $id_data]);
-    }
-    public function DeleteComment()
-    {
-
     }
     public function TambahGenre()
     {
@@ -231,5 +323,73 @@ class AksiAdmin extends CI_Controller{
         $this->db->set($data);
         $this->db->where(['kategori_id' => $id]);
         $this->db->update('kategori_buku');
+    }
+    public function ubahpassword() 
+    {
+        $password   = $this->db->escape_str($this->input->post('password'));
+        $user_id    = $this->db->escape_str($this->input->post('id'));
+
+        $pass_user  = ['password' => md5($password)];
+        $this->db->set($pass_user);
+        $this->db->where('user_id', $user_id);        
+        $query= $this->db->update('user');
+
+        $this->db->select('level');
+        $this->db->from('user');
+        $this->db->where('user_id', $user_id);
+        $status = $this->db->get()->result();
+
+        $status = $status[0]->level;
+
+        if (!$query) {
+            $this->session->set_flashdata('response', (object) [
+                'status' => 'danger',
+                'message' => 'gagal mengubah password '. $status .' <b>'.$user_id.'</b>'
+            ]);                
+            redirect(base_url()."admin/".$status);
+            return;
+        }
+        $this->session->set_flashdata('response', (object) [
+            'status' => 'success',
+            'message' => 'berhasil mengubah password '. $status .' <b>'.$user_id.'</b>'
+        ]);                
+        redirect(base_url()."admin/".$status);
+        return;
+    }
+    public function ubahdata() 
+    {
+        $nama   = $this->db->escape_str($this->input->post('nama'));
+        $alamat = $this->db->escape_str($this->input->post('alamat'));
+        $user_id    = $this->db->escape_str($this->input->post('id'));
+
+        $data_user  = [
+            'nama_lengkap' => $nama,
+            'alamat' => $alamat
+        ];
+        $this->db->set($data_user);
+        $this->db->where('user_id', $user_id);        
+        $query= $this->db->update('user');
+
+        $this->db->select('level');
+        $this->db->from('user');
+        $this->db->where('user_id', $user_id);
+        $status = $this->db->get()->result();
+
+        $status = $status[0]->level;
+
+        if (!$query) {
+            $this->session->set_flashdata('response', (object) [
+                'status' => 'danger',
+                'message' => 'gagal mengubah data '. $status .' <b>'.$user_id.'</b>'
+            ]);                
+            redirect(base_url()."admin/".$status);
+            return;
+        }
+        $this->session->set_flashdata('response', (object) [
+            'status' => 'success',
+            'message' => 'berhasil mengubah data'. $status .' <b>'.$user_id.'</b>'
+        ]);                
+        redirect(base_url()."admin/".$status);
+        return;
     }
 }

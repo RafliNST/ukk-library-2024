@@ -48,7 +48,7 @@ class Admin extends CI_Controller {
 	}
 	public function user()
     {
-        if ($this->session->userdata('login') != true && $this->session->userdata('user')->level != 3) {
+        if ($this->session->userdata('login') != true && $this->session->userdata('user')->level == 'user') {
 			redirect(base_url());
 			return;
 		}
@@ -59,7 +59,7 @@ class Admin extends CI_Controller {
     }
 	public function petugas()
     {
-        if ($this->session->userdata('login') != true && $this->session->userdata('user')->level != 2) {
+        if ($this->session->userdata('login') != true && $this->session->userdata('user')->level == 'user') {
 			redirect(base_url());
 			return;
 		}
@@ -70,7 +70,7 @@ class Admin extends CI_Controller {
     }
 	public function peminjaman()
     {
-        if ($this->session->userdata('login') != true && $this->session->userdata('user')->level != 3) {
+        if ($this->session->userdata('login') != true && $this->session->userdata('user')->level == 'user') {
 			redirect(base_url());
 			return;
 		}
@@ -86,7 +86,7 @@ class Admin extends CI_Controller {
     }
 	public function buku()
     {
-        if ($this->session->userdata('login') != true && $this->session->userdata('user')->level != 3) {
+        if ($this->session->userdata('login') != true && $this->session->userdata('user')->level == 'user') {
 			redirect(base_url());
 			return;
 		}
@@ -97,7 +97,7 @@ class Admin extends CI_Controller {
     }
     public function kategori()
     {
-        if ($this->session->userdata('login') != true && $this->session->userdata('user')->level != 3) {
+        if ($this->session->userdata('login') != true && $this->session->userdata('user')->level == 'user') {
 			redirect(base_url());
 			return;
 		}
@@ -108,7 +108,7 @@ class Admin extends CI_Controller {
     }
     public function ulasan()
     {
-        if ($this->session->userdata('login') != true && $this->session->userdata('user')->level != 3) {
+        if ($this->session->userdata('login') != true && $this->session->userdata('user')->level == 'user') {
 			redirect(base_url());
 			return;
 		}

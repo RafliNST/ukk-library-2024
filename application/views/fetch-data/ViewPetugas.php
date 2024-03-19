@@ -1,11 +1,26 @@
 <div class="container my-3">
+	<?php
+	if ($this->session->userdata('user')->level == 'admin'):
+	?>
 	<div class="row my-3">
 		<div class="col float-end">
 			<a href="<?= base_url().'form/petugas' ?>" class="btn btn-info btn-sm px-4">
 				<i class="fa fa-plus"></i> Tambah Data
 			</a>
 		</div>
+	</div>	
+	<?php
+	endif;
+	if (isset($this->session->response)):
+	?>
+	<div class="row my-3">
+		<div class="col">
+			<ul class="list-group-item list-group-item-<?= $this->session->userdata('response')->status ?>">
+				<?= $this->session->userdata('response')->message ?>
+			</ul>
+		</div>
 	</div>
+	<?php endif ?>
 	<table id="fetch-data" class="table table-responsive-sm table-striped table-sm table-action table-bordered"
 		style="width:100%">
 		<thead>

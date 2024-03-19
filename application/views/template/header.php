@@ -6,10 +6,10 @@
 <head>
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests">
+	<meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests">
 
 	<title>Peminjaman Buku Perpustakaan - <?= $title ?></title>
-	
+
 	<link rel="stylesheet" href="<?= base_url() ?>assets/css/bootstrap.css">
 	<link rel="stylesheet" href="<?= base_url() ?>assets/css/bootstrap-grid.css">
 	<link rel="stylesheet" href="<?= base_url() ?>assets/font-awesome/css/font-awesome.css">
@@ -20,8 +20,12 @@
 <body>
 	<nav class="navbar navbar-expand-lg navbar-dark bg-dark sticky-top shadow shadow-md">
 		<div class="container navbar-nav">
+			<button type="button" class="navbar-toggler position-absolute" data-bs-toggle="collapse"
+				data-bs-target="#menu-admin" style="right: 1.8em">
+				<span class="navbar-toggler-icon"></span>
+			</button>
 			<a href="<?= base_url() ?>" class="navbar-brand mx-auto">
-				Galileo Galilei				
+				Galileo Galilei
 			</a>
 			<?php 
 			if ($this->session->userdata('login') == true) {
@@ -33,7 +37,6 @@
 				$this->load->view('template/pre-login');
 			}
 			?>
-		
 		</div>
 	</nav>
 

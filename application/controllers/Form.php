@@ -22,6 +22,9 @@ class Form extends CI_Controller {
         elseif ($param == 'buku' && $path != '') {
             $this->EditBuku($path[0]);
         }
+        else {
+            redirect(base_url());
+        }
     }    
 	public function index()
 	{

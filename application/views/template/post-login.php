@@ -1,6 +1,6 @@
 <div class="dropdown me-3 position-absolute d-inline" style="left: 1.6rem">
 	<button type="button" class="btn btn-outline-light btn-sm dropdown-toggle" data-bs-toggle="dropdown">
-		<i class="fa fa-user"></i> <?= $this->session->userdata('user')->nama_lengkap ?>
+		<i class="fa fa-user"></i> <?= htmlspecialchars($this->session->userdata('user')->nama_lengkap) ?>
 	</button>
 	<div class="dropdown-menu">
 		<a href="<?= base_url().'user/koleksi-pribadi' ?>" class="dropdown-item text-secondary btn-sm">

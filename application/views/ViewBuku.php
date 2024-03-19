@@ -76,7 +76,8 @@
 					<div class="row">
 						<div class="form-group col">
 							<label for="deskripsi">Deskripsi</label>
-							<textrea class="form-control form-control-sm" readonly><?= $o->blurb ?></textrea>
+							<textarea class="form-control form-control-sm" rows="5%" readonly style="resize: none"><?= $o->blurb ?></textarea>
+							<!-- <input type="text" name="" id="" class="form-control form-control-sm" value="<?= $o->blurb ?>" readonly> -->
 						</div>
 					</div>
 					<div class="row container">
@@ -161,7 +162,12 @@
 				foreach($comments->result() as $comment=>$o): 
 				?>
 					<div class="card w-100 mb-2" style="width: 18rem;">
-						<h5 class="card-header"><?= $o->nama_lengkap ?></h5>
+						<h5 class="card-header">
+							<?= $o->nama_lengkap ?>
+							<p class="position-absolute text-dark h5" style="right: 1.3em; top: 0%; transform: translateY(50%)">
+								<i class="fa fa-star"></i> <?= $o->rating ?>
+							</p>
+						</h5>
 						<div class="list-group list-group-flush">
 							<p class="list-group-item h6 text-<?= (($o->respon == 'like')? 'primary' : 'danger') ?>">
 								<?= $o->ulasan ?>
